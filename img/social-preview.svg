@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1f3a"/>
+      <stop offset="100%" stop-color="#0f1328"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="nodeGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="textShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feFlood flood-color="#000000" flood-opacity="0.5" result="flood"/>
+      <feComposite in="flood" in2="SourceAlpha" operator="in" result="shadow"/>
+      <feGaussianBlur in="shadow" stdDeviation="3" result="blur"/>
+      <feOffset in="blur" dx="0" dy="2" result="offsetBlur"/>
+      <feMerge>
+        <feMergeNode in="offsetBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Arrow markers for directed edges -->
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L10,3.5 L0,7 Z" fill="#4ade80"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <path d="M0,0 L10,3.5 L0,7 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04">
+    <line x1="0" y1="160" x2="640" y2="160" stroke="#60a5fa" stroke-width="0.5"/>
+    <line x1="0" y1="320" x2="640" y2="320" stroke="#60a5fa" stroke-width="0.5"/>
+    <line x1="0" y1="480" x2="640" y2="480" stroke="#60a5fa" stroke-width="0.5"/>
+    <line x1="160" y1="0" x2="160" y2="640" stroke="#60a5fa" stroke-width="0.5"/>
+    <line x1="320" y1="0" x2="320" y2="640" stroke="#60a5fa" stroke-width="0.5"/>
+    <line x1="480" y1="0" x2="480" y2="640" stroke="#60a5fa" stroke-width="0.5"/>
+  </g>
+
+  <!--
+    Directed graph with reachability from source node S.
+    Layout (left half):
+      S(120,320) - source node (amber)
+      Reachable from S: A(280,170) B(280,470) C(440,320) D(580,170) E(580,470)
+      Unreachable: U1(440,100) U2(580,530)
+
+    Directed paths from S reach A, B, C, D, E (green arrows).
+    U1 and U2 have no directed path from S (gray).
+  -->
+
+  <!-- Unreachable edges (gray, thin, directed) -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowGray)">
+    <!-- U1 -> S (points toward S, so S can't reach U1 via this) -->
+    <line x1="425" y1="108" x2="140" y2="310"/>
+    <!-- U2 -> B -->
+    <line x1="565" y1="528" x2="298" y2="478"/>
+    <!-- U1 -> U2 -->
+    <path d="M 452,114 Q 540,300 572,516"/>
+  </g>
+
+  <!-- Reachable edges (green, thick, directed, with glow) -->
+  <g stroke="#4ade80" stroke-width="3" fill="none" filter="url(#glow)" marker-end="url(#arrowGreen)">
+    <!-- S -> A -->
+    <path d="M 134,306 Q 180,230 264,178"/>
+    <!-- S -> B -->
+    <path d="M 134,334 Q 180,410 264,462"/>
+    <!-- S -> C -->
+    <line x1="138" y1="320" x2="422" y2="320"/>
+    <!-- A -> D -->
+    <line x1="298" y1="170" x2="562" y2="170"/>
+    <!-- C -> D -->
+    <path d="M 452,306 Q 500,230 564,178"/>
+    <!-- C -> E -->
+    <path d="M 452,334 Q 500,410 564,462"/>
+    <!-- B -> E -->
+    <line x1="298" y1="470" x2="562" y2="470"/>
+    <!-- A -> C -->
+    <path d="M 292,186 Q 340,260 428,312"/>
+  </g>
+
+  <!-- Nodes -->
+  <g filter="url(#nodeGlow)">
+    <!-- Source node S (amber) -->
+    <circle cx="120" cy="320" r="22" fill="#1e293b" stroke="#f59e0b" stroke-width="3"/>
+    <text x="120" y="327" text-anchor="middle" fill="#f59e0b" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="16" font-weight="bold">S</text>
+
+    <!-- Reachable nodes (green stroke) -->
+    <circle cx="280" cy="170" r="18" fill="#1e293b" stroke="#4ade80" stroke-width="2.5"/>
+    <text x="280" y="176" text-anchor="middle" fill="#4ade80" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">A</text>
+
+    <circle cx="280" cy="470" r="18" fill="#1e293b" stroke="#4ade80" stroke-width="2.5"/>
+    <text x="280" y="476" text-anchor="middle" fill="#4ade80" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">B</text>
+
+    <circle cx="440" cy="320" r="18" fill="#1e293b" stroke="#4ade80" stroke-width="2.5"/>
+    <text x="440" y="326" text-anchor="middle" fill="#4ade80" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">C</text>
+
+    <circle cx="580" cy="170" r="18" fill="#1e293b" stroke="#4ade80" stroke-width="2.5"/>
+    <text x="580" y="176" text-anchor="middle" fill="#4ade80" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">D</text>
+
+    <circle cx="580" cy="470" r="18" fill="#1e293b" stroke="#4ade80" stroke-width="2.5"/>
+    <text x="580" y="476" text-anchor="middle" fill="#4ade80" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">E</text>
+
+    <!-- Unreachable nodes (dim gray) -->
+    <circle cx="440" cy="100" r="18" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <text x="440" y="106" text-anchor="middle" fill="#475569" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">F</text>
+
+    <circle cx="580" cy="540" r="18" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <text x="580" y="546" text-anchor="middle" fill="#475569" font-family="'JetBrains Mono', 'Fira Code', monospace" font-size="15" font-weight="bold">G</text>
+  </g>
+
+  <!-- Divider line -->
+  <line x1="700" y1="100" x2="700" y2="540" stroke="#334155" stroke-width="1" opacity="0.4"/>
+
+  <!-- Text section (right side) -->
+  <g filter="url(#textShadow)">
+    <!-- Title: "Dyn" in blue, "Reach" in light -->
+    <text x="990" y="220" text-anchor="middle" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="60" font-weight="800" letter-spacing="-1">
+      <tspan fill="#60a5fa">Dyn</tspan><tspan fill="#e2e8f0">Reach</tspan>
+    </text>
+
+    <!-- Subtitle -->
+    <text x="990" y="270" text-anchor="middle" fill="#94a3b8" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="22" font-style="italic">
+      Dynamic Reachability in Practice
+    </text>
+
+    <!-- Tagline -->
+    <text x="990" y="325" text-anchor="middle" fill="#64748b" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="17">
+      Fully dynamic reachability algorithms
+    </text>
+    <text x="990" y="350" text-anchor="middle" fill="#64748b" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="17">
+      for directed graphs
+    </text>
+  </g>
+
+  <!-- Badge: Part of DynGraphLab -->
+  <g transform="translate(990, 405)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.6"/>
+    <text x="0" y="6" text-anchor="middle" fill="#60a5fa" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" opacity="0.9">
+      Part of DynGraphLab
+    </text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(990, 490)">
+    <!-- Source legend -->
+    <circle cx="-100" cy="0" r="7" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+    <text x="-85" y="5" fill="#94a3b8" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13">Source</text>
+
+    <!-- Reachable legend -->
+    <circle cx="-20" cy="0" r="7" fill="#1e293b" stroke="#4ade80" stroke-width="2"/>
+    <text x="-5" y="5" fill="#94a3b8" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13">Reachable</text>
+
+    <!-- Unreachable legend -->
+    <circle cx="90" cy="0" r="7" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <text x="105" y="5" fill="#94a3b8" font-family="'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="13">Unreachable</text>
+  </g>
+</svg>
